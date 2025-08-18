@@ -158,4 +158,3 @@ export PATH=$PATH:~/.spoof-dpi/bin
 . "/home/sacr1ficerq/.deno/env"
 
 export POKER_IP=194.87.140.89
-export AIAPI=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
