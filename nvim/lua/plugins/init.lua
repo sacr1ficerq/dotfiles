@@ -25,6 +25,16 @@ return require('packer').startup(function(use)
         end
     }
 
+    use({
+        "toppair/peek.nvim",
+        run = "deno task --quiet build:fast",
+        config = function()
+            require("peek").setup({ app = "browser" })
+            vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
+            vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
+        end,
+    })
+
     -- Lualine (separate plugin)
     use {
         'nvim-lualine/lualine.nvim',
@@ -46,23 +56,13 @@ return require('packer').startup(function(use)
         end
     }
 
-
     -- Navigation
     use {
         'nvim-telescope/telescope.nvim',
-
         requires = { 'nvim-lua/plenary.nvim' }
     }
 
     use 'ThePrimeagen/harpoon'
-
-    -- AI
-    -- use {
-    --     'jpmcb/nvim-llama',
-    --     config = function()
-    --         require('nvim-llama').setup ({})
-    --     end
-    -- }
 
     -- Editing
     use 'tpope/vim-surround'  -- Surround text objects
@@ -92,7 +92,6 @@ return require('packer').startup(function(use)
         end
     }
 
-
     -- Treesitter (Syntax Highlighting)
     use {
         'nvim-treesitter/nvim-treesitter',
@@ -107,37 +106,63 @@ return require('packer').startup(function(use)
         end
     }
 
-    -- Markdown with LaTeX
+    -- AI
     use {
-        'toppair/peek.nvim',
-        run = function()
-            local peek_path = vim.fn.stdpath('data')..'/site/pack/packer/start/peek.nvim'
-            if vim.fn.isdirectory(peek_path) == 1 then
-                vim.fn.system({'deno', 'task', '--cwd', peek_path, 'build:fast'})
-            end
+        "supermaven-inc/supermaven-nvim",
+        config = function()
+            require("supermaven-nvim").setup({})
         end,
-        config = function()
-            require('peek').setup({
-                app = 'webview',
-                webview = {
-                    kitty_method = 'standalone',
-                    timeout = 10,
-                    backend = 'gl'
-                },
-                filetype = {'markdown'},
-            })
-        end
     }
+    -- use {
+    --     'jpmcb/nvim-llama',
+    --     config = function()
+    --         require('nvim-llama').setup ({})
+    --     end
+    -- }
+
 
     use {
-        'jbyuki/nabla.nvim',
+        'jannis-baum/vivify.vim',
+    }
+    use "rcarriga/nvim-notify"   -- optional
+    use "stevearc/dressing.nvim" -- optional, UI for :JupyniumKernelSelect
+    use {
+        "jannis-baum/jupyviv.nvim",
         config = function()
-            -- Newer versions use this instead of setup()
-            require('nabla').enable_virt()  -- Enable virtual text
-            -- Optional keybindings:
-            vim.keymap.set('n', '<leader>eq', require('nabla').popup)
+            require("jupyviv").setup({})
         end
     }
+    -- use 'karb94/neoscroll.nvim'
+    use {
+        'brianhuster/live-preview.nvim',
+        requires = { 'nvim-telescope/telescope.nvim' }, -- Uses Telescope by default
+        config = function()
+        require('live-preview').setup({
+            port = 5500, -- Set a custom port (default is random)
+            browser = 'default', -- Options: 'default', 'chrome', 'firefox'
+        })
+    end
+}
 
-    use 'lervag/vimtex'
+use {
+    'malbertzard/inline-fold.nvim',
+    requires = 'nvim-treesitter/nvim-treesitter',
+    config = function()
+        require('inline-fold').setup({
+            defaultPlaceholder = "…",
+            queries = {
+                html = {
+                    { pattern = 'class="([^"]*)"', placeholder = "@" }, -- Hides classes
+                    { pattern = 'style="([^"]*)"', placeholder = "@" }, -- Hides classes
+                    { pattern = 'href="(.-)"' }, -- Hides hrefs
+                },
+                -- Add configurations for tsx, vue, etc. as needed
+                tsx = {
+                    { pattern = 'className="([^"]*)"', placeholder = "@" },
+                }
+            }
+        })
+    end
+}
+
 end)

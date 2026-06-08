@@ -13,6 +13,7 @@ cmp.setup({
         ['<C-y>'] = cmp.mapping.confirm({ select = true }),
     }),
     sources = cmp.config.sources({
+        { name = "jupynium", priority = 1000 },
         { name = 'nvim_lsp' },
         { name = 'luasnip' },
         { name = 'buffer' },

@@ -20,8 +20,13 @@ require('config.keymaps')
 require('config.options')
 require('config.mason')
 require('config.lsp')
-require('config.vimtex')
 require('config.telescope')
 require('config.harpoon')
 require('config.diagnostic')
 require('config.cmp')
+require('config.maven')
+
+vim.g.vivify_instant_refresh = 1
+vim.g.vivify_auto_scroll = 1
+
+require("jupyviv").setup()
