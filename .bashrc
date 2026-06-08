@@ -1,7 +1,3 @@
-# ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
-
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
@@ -16,8 +12,8 @@ HISTCONTROL=ignoreboth
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
+HISTSIZE=10000
+HISTFILESIZE=20000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -25,7 +21,7 @@ shopt -s checkwinsize
 
 # If set, the pattern "**" used in a pathname expansion context will
 # match all files and zero or more directories and subdirectories.
-# shopt -s globstar
+shopt -s globstar
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -58,36 +54,8 @@ fi
 
 unset color_prompt force_color_prompt
 
-alias dpi='ratbagctl "Logitech G502 HERO Gaming Mouse" dpi set'
-
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
-
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-fi
-
 # colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-
-# some more ls aliases
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
-
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-
-# Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
@@ -118,43 +86,51 @@ RED="[1;31m"
 # PS1='\e${ORANGE}login\e${RED}@\e${GOLD}dkdubinin 🦊\e${RED} \w \$\e${RESET} '
 # PS1='\e${ORANGE}capacitance\e${RED}\e${GOLD}🦊\e${RED} \w \$\e${RESET} '
 # PS1='\[\033[33m\]\u🦊\[\033[31m\] \w \$\[\033[34m\] '
-PS1='🦊\[\033[33m\] \W \$\[\033[34m\] '
-
-setxkbmap -option caps:escape 
-
-export VM="51.250.77.56"
-export VM0=192.168.122.127
-export VM1=192.168.122.138
-# export NVM_DIR="$HOME/.nvm"
-# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-source ~/.local/share/blesh/ble.sh
+PS1='kitsune\[\033[33m\] \W \$\[\033[34m\] '
 
 # PATH
 export PATH="${HOME}/bin:${PATH}"
 
-# cargo
-PATH="/home/sacr1ficerq/.local/bin":"$PATH"
-. "$HOME/.cargo/env"
-
-# texlive
-export PATH="/usr/local/texlive/2022/bin/x86_64-linux:$PATH"
-
-# The next line updates PATH for Yandex Cloud CLI.
-if [ -f '/home/sacr1ficerq/yandex-cloud/path.bash.inc' ]; then source '/home/sacr1ficerq/yandex-cloud/path.bash.inc'; fi
-
-# The next line enables shell command completion for yc.
-if [ -f '/home/sacr1ficerq/yandex-cloud/completion.bash.inc' ]; then source '/home/sacr1ficerq/yandex-cloud/completion.bash.inc'; fi
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # pnpm
-export PNPM_HOME="/home/sacr1ficerq/.local/share/pnpm"
+export PNPM_HOME="/home/cloexec/.local/share/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 
-# pnpm end
-export PATH=$PATH:~/.spoof-dpi/bin
-. "/home/sacr1ficerq/.deno/env"
+export EDITOR=nvim
 
-export POKER_IP=194.87.140.89
+# pyenv
+# export PATH="$HOME/.pyenv/bin:$PATH"
+# eval "$(pyenv init -)"S
+# export PYENV_ROOT="$HOME/.pyenv"
+# export PATH="$PYENV_ROOT/bin:$PATH"
+# eval "$(pyenv init -)"
+
+# cargo
+. "$HOME/.cargo/env"
+export GTK_THEME="Rose-Pine-Moon"
+
+# CUDA stuff
+export CUDA_HOME=/opt/cuda
+
+# Optional: Add the CUDA bin and lib paths for good measure
+export PATH=$CUDA_HOME/bin:$PATH
+export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
+[ -f /opt/miniconda3/etc/profile.d/conda.sh ] && source /opt/miniconda3/etc/profile.d/conda.sh
+
+# Created by `pipx` on 2026-02-09 01:11:25
+export PATH="$PATH:/home/cloexec/.local/bin"
+
+export PATH=/usr/lib/llvm20/bin:$PATH
+export PATH=/home/cloexec/Downloads/Apps/git-lfs:$PATH
+export PATH="/home/cloexec/.bun/bin:$PATH"
+
+export http_proxy="http://127.0.0.1:12334"
+export https_proxy="http://127.0.0.1:12334"
+export HTTP_PROXY="http://127.0.0.1:12334"
+export HTTPS_PROXY="http://127.0.0.1:12334"
